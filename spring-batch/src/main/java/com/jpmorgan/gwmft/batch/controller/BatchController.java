@@ -8,9 +8,11 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -31,15 +33,22 @@ public class BatchController {
 	MySQLRepo mySQLRepo;
 
 	@GetMapping("/batches")
-	public ModelAndView batches(@ModelAttribute BatchDetails batchDtls) {
+	public ModelAndView batches(@ModelAttribute BatchDetails batchDtls,
+			@RequestParam(value = "batchDate", required = false) String batchDate) {
 
-		List<BatchDetails> batchDetails = (List<BatchDetails>) mySQLRepo.findAll();
+		ModelAndView modelAndView = new ModelAndView();
+		List<BatchDetails> batchDetails;
 
-		ModelAndView mav = new ModelAndView();
-		mav.setViewName("batches");
-		mav.addObject("batchDetails", batchDetails);
+		if (StringUtils.isEmpty(batchDate)) {
+			batchDetails = (List<BatchDetails>) mySQLRepo.findAll();
+		} else {
+			batchDetails = (List<BatchDetails>) mySQLRepo.findByDate(batchDate);
+		}
 
-		return mav;
+		modelAndView.setViewName("batches");
+		modelAndView.addObject("batchDetails", batchDetails);
+
+		return modelAndView;
 	}
 
 }
