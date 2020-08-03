@@ -1,7 +1,7 @@
 /**
  * Controller class for Spring Batch application.
  */
-package com.jpmorgan.gwnft.batch.controller;
+package com.jpmorgan.gwmft.batch.controller;
 
 import java.util.List;
 
@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.jpmorgan.gwmft.batch.model.BatchDetails;
-import com.jpmorgan.gwnft.batch.repo.MySQLRepo;
+import com.jpmorgan.gwmft.batch.repo.MySQLRepo;
 
 import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
@@ -24,7 +24,7 @@ import lombok.experimental.FieldDefaults;
 @RequestMapping
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @EntityScan("com.jpmorgan.gwmft.batch.model")
-@EnableJpaRepositories(basePackages = { "com.jpmorgan.gwnft.batch.repo" })
+@EnableJpaRepositories(basePackages = { "com.jpmorgan.gwmft.batch.repo" })
 public class BatchController {
 
 	@Autowired

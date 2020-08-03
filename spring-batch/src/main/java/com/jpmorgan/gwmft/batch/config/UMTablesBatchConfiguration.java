@@ -20,9 +20,9 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.ClassPathResource;
 
+import com.jpmorgan.gwmft.batch.mapper.UMTablesMapper;
 import com.jpmorgan.gwmft.batch.model.UMTablesData;
-import com.jpmorgan.gwmft.mapper.UMTablesMapper;
-import com.jpmorgan.gwmft.processor.UMTablesProcessor;
+import com.jpmorgan.gwmft.batch.processor.UMTablesProcessor;
 
 import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
@@ -42,7 +42,7 @@ public class UMTablesBatchConfiguration {
 	DataSource datasource;
 
 	@Bean
-	public JdbcCursorItemReader<UMTablesData> reader() {
+	public JdbcCursorItemReader<UMTablesData> umTablesReader() {
 
 		JdbcCursorItemReader<UMTablesData> umTablesDataReader = new JdbcCursorItemReader<UMTablesData>();
 
@@ -54,13 +54,13 @@ public class UMTablesBatchConfiguration {
 	}
 
 	@Bean
-	public UMTablesProcessor processor() {
+	public UMTablesProcessor umTablesProcessor() {
 
 		return new UMTablesProcessor();
 	}
 
 	@Bean
-	public FlatFileItemWriter<UMTablesData> writer() {
+	public FlatFileItemWriter<UMTablesData> umTablesWriter() {
 
 		FlatFileItemWriter<UMTablesData> umTablesDataWriter = new FlatFileItemWriter<UMTablesData>();
 		umTablesDataWriter.setResource(new ClassPathResource("umtablesdata.csv"));
@@ -81,8 +81,8 @@ public class UMTablesBatchConfiguration {
 	@Bean
 	public Step step1() {
 
-		return umTablesStepBuilderFactory.get("step1").<UMTablesData, UMTablesData>chunk(2).reader(reader())
-				.processor(processor()).writer(writer()).build();
+		return umTablesStepBuilderFactory.get("step1").<UMTablesData, UMTablesData>chunk(2).reader(umTablesReader())
+				.processor(umTablesProcessor()).writer(umTablesWriter()).build();
 	}
 
 	@Bean

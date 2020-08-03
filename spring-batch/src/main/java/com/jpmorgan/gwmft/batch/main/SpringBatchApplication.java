@@ -12,8 +12,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 @SpringBootApplication
 @EnableScheduling
 @EnableAutoConfiguration
-@ComponentScan(basePackages = { "com.jpmorgan.gwmft.batch.config", "com.jpmorgan.gwnft.batch.controller",
-		"com.jpmorgan.gwnft.batch.repo", "com.jpmorgan.gwmft.batch.scheduler" })
+@ComponentScan(basePackages = { "com.jpmorgan.gwmft" })
 public class SpringBatchApplication {
 
 	public static void main(String[] args) {

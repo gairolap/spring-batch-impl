@@ -1,7 +1,7 @@
 /**
  * Repository to perform CRUD over MySQL database.
  */
-package com.jpmorgan.gwnft.batch.repo;
+package com.jpmorgan.gwmft.batch.repo;
 
 import java.util.List;
 

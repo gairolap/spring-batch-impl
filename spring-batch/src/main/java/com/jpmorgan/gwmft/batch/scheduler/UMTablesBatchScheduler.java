@@ -31,11 +31,12 @@ public class UMTablesBatchScheduler {
 	@Autowired
 	JobLauncher umTablesDataJobLauncher;
 
-	@Scheduled(cron = "0 38 12 ? * MON-FRI")
+	@Scheduled(cron = "0 * * * * *")
 	public void executeSchedule() throws JobExecutionAlreadyRunningException, JobRestartException,
 	JobInstanceAlreadyCompleteException, JobParametersInvalidException {
 
-		umTablesDataJobLauncher.run(umTablesDataSchedulerJob, new JobParametersBuilder().toJobParameters());
+		umTablesDataJobLauncher.run(umTablesDataSchedulerJob,
+				new JobParametersBuilder().addLong("time", System.currentTimeMillis()).toJobParameters());
 	}
 
 }
