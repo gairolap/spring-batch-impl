@@ -1,4 +1,8 @@
+/**
+ * RowMapper class for UM_TABLES_DATA.
+ */
 package com.jpmorgan.gwmft.mapper;
+
 import java.sql.ResultSet;
 import java.sql.SQLException;
 

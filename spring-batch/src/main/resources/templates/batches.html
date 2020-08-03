@@ -1,0 +1,34 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Batch Details</title>
+</head>
+<body>
+	<table border="1">
+		<tr>
+			<th>JOB_EXECUTION_ID</th>
+			<th>VERSION</th>
+			<th>JOB_INSTANCE_ID</th>
+			<th>CREATE_TIME</th>
+			<th>START_TIME</th>
+			<th>END_TIME</th>
+			<th>STATUS</th>
+			<th>EXIT_CODE</th>
+			<th>EXIT_MESSAGE</th>
+			<th>LAST_UPDATED</th>
+		</tr>
+		<tr th:each="batch : ${batchDetails}">
+			<td th:text="${batch.jobExecutionId}"></td>
+			<td th:text="${batch.version}"></td>
+			<td th:text="${batch.jobInstanceId}"></td>
+			<td th:text="${batch.createTym}"></td>
+			<td th:text="${batch.startTym}"></td>
+			<td th:text="${batch.endTym}"></td>
+			<td th:text="${batch.status}"></td>
+			<td th:text="${batch.exitCd}"></td>
+			<td th:text="${batch.exitMsg}"></td>
+			<td th:text="${batch.lastUpdDt}"></td>
+		</tr>
+	</table>
+</body>
+</html>

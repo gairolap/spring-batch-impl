@@ -1,5 +1,5 @@
 /**
- * Model class for user maintenance.
+ * Model class for UM_TABLES_DATA.
  */
 package com.jpmorgan.gwmft.batch.model;
 
