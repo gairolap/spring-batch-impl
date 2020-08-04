@@ -14,6 +14,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
+import com.jpmorgan.gwmft.batch.constant.BatchConstants;
+
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -35,8 +37,8 @@ public class UMTablesBatchScheduler {
 	public void executeSchedule() throws JobExecutionAlreadyRunningException, JobRestartException,
 	JobInstanceAlreadyCompleteException, JobParametersInvalidException {
 
-		umTablesDataJobLauncher.run(umTablesDataSchedulerJob,
-				new JobParametersBuilder().addLong("time", System.currentTimeMillis()).toJobParameters());
+		umTablesDataJobLauncher.run(umTablesDataSchedulerJob, new JobParametersBuilder()
+				.addLong(BatchConstants.TIME_KEY, System.currentTimeMillis()).toJobParameters());
 	}
 
 }

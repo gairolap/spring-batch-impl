@@ -6,8 +6,8 @@ package com.jpmorgan.gwmft.batch.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.domain.EntityScan;
-import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -16,8 +16,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.jpmorgan.gwmft.batch.constant.BatchConstants;
+import com.jpmorgan.gwmft.batch.mapper.BatchDetailsMapper;
 import com.jpmorgan.gwmft.batch.model.BatchDetails;
-import com.jpmorgan.gwmft.batch.repo.MySQLRepo;
 
 import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
@@ -25,12 +26,16 @@ import lombok.experimental.FieldDefaults;
 @RestController
 @RequestMapping
 @FieldDefaults(level = AccessLevel.PRIVATE)
-@EntityScan("com.jpmorgan.gwmft.batch.model")
-@EnableJpaRepositories(basePackages = { "com.jpmorgan.gwmft.batch.repo" })
 public class BatchController {
 
+	@Value("${fetchBatchDetailsSQL}")
+	String fetchBatchDetailsSQL;
+
+	@Value("${fetchByCreateDtClause}")
+	String fetchByCreateDtClause;
+
 	@Autowired
-	MySQLRepo mySQLRepo;
+	JdbcTemplate batchDtlsJdbcTemplate;
 
 	@GetMapping("/batches")
 	public ModelAndView batches(@ModelAttribute BatchDetails batchDtls,
@@ -40,13 +45,17 @@ public class BatchController {
 		List<BatchDetails> batchDetails;
 
 		if (StringUtils.isEmpty(batchDate)) {
-			batchDetails = (List<BatchDetails>) mySQLRepo.findAll();
+			batchDetails = (List<BatchDetails>) batchDtlsJdbcTemplate.query(fetchBatchDetailsSQL,
+					new BatchDetailsMapper());
 		} else {
-			batchDetails = (List<BatchDetails>) mySQLRepo.findByDate(batchDate);
+			batchDetails = (List<BatchDetails>) batchDtlsJdbcTemplate
+					.query(fetchBatchDetailsSQL.concat(BatchConstants.WHITESPACE_KEY).concat(fetchByCreateDtClause)
+							.concat(BatchConstants.WHITESPACE_KEY).concat(BatchConstants.DOUBLE_QUOTE_KEY)
+							.concat(batchDate).concat(BatchConstants.DOUBLE_QUOTE_KEY), new BatchDetailsMapper());
 		}
 
-		modelAndView.setViewName("batches");
-		modelAndView.addObject("batchDetails", batchDetails);
+		modelAndView.setViewName(BatchConstants.BATCH_VIEWNM_KEY);
+		modelAndView.addObject(BatchConstants.BATCH_MODEL_KEY, batchDetails);
 
 		return modelAndView;
 	}

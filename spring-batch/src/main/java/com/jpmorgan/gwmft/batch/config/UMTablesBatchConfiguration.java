@@ -16,9 +16,11 @@ import org.springframework.batch.item.file.FlatFileItemWriter;
 import org.springframework.batch.item.file.transform.BeanWrapperFieldExtractor;
 import org.springframework.batch.item.file.transform.DelimitedLineAggregator;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.ClassPathResource;
+import org.springframework.jdbc.core.JdbcTemplate;
 
 import com.jpmorgan.gwmft.batch.mapper.UMTablesMapper;
 import com.jpmorgan.gwmft.batch.model.UMTablesData;
@@ -41,13 +43,25 @@ public class UMTablesBatchConfiguration {
 	@Autowired
 	DataSource datasource;
 
+	@Value("${fetchUMTablesDetailsSQL}")
+	String fetchUMTablesDetailsSQL;
+
+	@Value("${chunkSize}")
+	int chunkSize;
+
+	@Bean
+	public JdbcTemplate batchDetailsJdbcTemplate() {
+
+		return new JdbcTemplate(datasource);
+	}
+
 	@Bean
 	public JdbcCursorItemReader<UMTablesData> umTablesReader() {
 
 		JdbcCursorItemReader<UMTablesData> umTablesDataReader = new JdbcCursorItemReader<UMTablesData>();
 
 		umTablesDataReader.setDataSource(datasource);
-		umTablesDataReader.setSql("SELECT ROW_ID, RECORD, RECORD_TYP, TBL_NM FROM UM_TABLES_DATA");
+		umTablesDataReader.setSql(fetchUMTablesDetailsSQL);
 		umTablesDataReader.setRowMapper(new UMTablesMapper());
 
 		return umTablesDataReader;
@@ -79,17 +93,17 @@ public class UMTablesBatchConfiguration {
 	}
 
 	@Bean
-	public Step step1() {
+	public Step readMySQLWriteToCSV() {
 
-		return umTablesStepBuilderFactory.get("step1").<UMTablesData, UMTablesData>chunk(2).reader(umTablesReader())
-				.processor(umTablesProcessor()).writer(umTablesWriter()).build();
+		return umTablesStepBuilderFactory.get("readMySQLWriteToCSV").<UMTablesData, UMTablesData>chunk(chunkSize)
+				.reader(umTablesReader()).processor(umTablesProcessor()).writer(umTablesWriter()).build();
 	}
 
 	@Bean
 	public Job exportUMTablesDataJob() {
 
-		return umTablesJobBuilderFactory.get("exportUMTablesDataJob").incrementer(new RunIdIncrementer()).flow(step1())
-				.end().build();
+		return umTablesJobBuilderFactory.get("exportUMTablesDataJob").incrementer(new RunIdIncrementer())
+				.flow(readMySQLWriteToCSV()).end().build();
 	}
 
 }

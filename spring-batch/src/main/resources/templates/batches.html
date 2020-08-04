@@ -7,27 +7,29 @@
 	<table border="1">
 		<tr>
 			<th>JOB_EXECUTION_ID</th>
-			<th>VERSION</th>
-			<th>JOB_INSTANCE_ID</th>
+			<th>JOB_KEY</th>
+			<th>JOB_NAME</th>
+			<th>STEP_NAME</th>
+			<th>READ_COUNT</th>
+			<th>WRITE_COUNT</th>
 			<th>CREATE_TIME</th>
 			<th>START_TIME</th>
 			<th>END_TIME</th>
 			<th>STATUS</th>
 			<th>EXIT_CODE</th>
-			<th>EXIT_MESSAGE</th>
-			<th>LAST_UPDATED</th>
 		</tr>
 		<tr th:each="batch : ${batchDetails}">
 			<td th:text="${batch.jobExecutionId}"></td>
-			<td th:text="${batch.version}"></td>
-			<td th:text="${batch.jobInstanceId}"></td>
+			<td th:text="${batch.jobKey}"></td>
+			<td th:text="${batch.jobName}"></td>
+			<td th:text="${batch.stepName}"></td>
+			<td th:text="${batch.readCount}"></td>
+			<td th:text="${batch.writeCount}"></td>
 			<td th:text="${batch.createTym}"></td>
 			<td th:text="${batch.startTym}"></td>
 			<td th:text="${batch.endTym}"></td>
 			<td th:text="${batch.status}"></td>
-			<td th:text="${batch.exitCd}"></td>
-			<td th:text="${batch.exitMsg}"></td>
-			<td th:text="${batch.lastUpdDt}"></td>
+			<td th:text="${batch.exitCode}"></td>
 		</tr>
 	</table>
 </body>
