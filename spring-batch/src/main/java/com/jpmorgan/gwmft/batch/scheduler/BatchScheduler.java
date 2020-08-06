@@ -1,5 +1,5 @@
 /**
- * Scheduler class for UM_TABLES_DATA batch load.
+ * Scheduler class for batch process.
  */
 package com.jpmorgan.gwmft.batch.scheduler;
 
@@ -25,7 +25,7 @@ import lombok.experimental.FieldDefaults;
 @Data
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class UMTablesBatchScheduler {
+public class BatchScheduler {
 
 	@Autowired
 	Job umTablesDataSchedulerJob;

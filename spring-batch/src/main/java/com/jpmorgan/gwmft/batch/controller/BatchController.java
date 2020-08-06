@@ -1,8 +1,10 @@
 /**
- * Controller class for Spring Batch application.
+ * Controller class for Batch application.
  */
 package com.jpmorgan.gwmft.batch.controller;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,13 +33,13 @@ public class BatchController {
 	@Value("${fetchBatchDetailsSQL}")
 	String fetchBatchDetailsSQL;
 
-	@Value("${fetchByCreateDtClause}")
-	String fetchByCreateDtClause;
+	@Value("${batchDetailsOrderByClause}")
+	String batchDetailsOrderByClause;
 
 	@Autowired
 	JdbcTemplate batchDtlsJdbcTemplate;
 
-	@GetMapping("/batches")
+	@GetMapping
 	public ModelAndView batches(@ModelAttribute BatchDetails batchDtls,
 			@RequestParam(value = "batchDate", required = false) String batchDate) {
 
@@ -45,14 +47,15 @@ public class BatchController {
 		List<BatchDetails> batchDetails;
 
 		if (StringUtils.isEmpty(batchDate)) {
-			batchDetails = (List<BatchDetails>) batchDtlsJdbcTemplate.query(fetchBatchDetailsSQL,
-					new BatchDetailsMapper());
-		} else {
-			batchDetails = (List<BatchDetails>) batchDtlsJdbcTemplate
-					.query(fetchBatchDetailsSQL.concat(BatchConstants.WHITESPACE_KEY).concat(fetchByCreateDtClause)
-							.concat(BatchConstants.WHITESPACE_KEY).concat(BatchConstants.DOUBLE_QUOTE_KEY)
-							.concat(batchDate).concat(BatchConstants.DOUBLE_QUOTE_KEY), new BatchDetailsMapper());
+
+			batchDate = new SimpleDateFormat(BatchConstants.BATCH_DTLS_DT_FRMT).format(new Date());
 		}
+
+		batchDetails = (List<BatchDetails>) batchDtlsJdbcTemplate.query(
+				fetchBatchDetailsSQL.concat(BatchConstants.WHITESPACE_KEY).concat(BatchConstants.DOUBLE_QUOTE_KEY)
+				.concat(batchDate).concat(BatchConstants.DOUBLE_QUOTE_KEY).concat(BatchConstants.WHITESPACE_KEY)
+				.concat(batchDetailsOrderByClause),
+				new BatchDetailsMapper());
 
 		modelAndView.setViewName(BatchConstants.BATCH_VIEWNM_KEY);
 		modelAndView.addObject(BatchConstants.BATCH_MODEL_KEY, batchDetails);

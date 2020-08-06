@@ -3,6 +3,8 @@
  */
 package com.jpmorgan.gwmft.batch.model;
 
+import org.springframework.stereotype.Component;
+
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -13,7 +15,8 @@ import lombok.experimental.FieldDefaults;
 @NoArgsConstructor
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class UMTablesData {
+@Component
+public class UMTablesData implements Entity {
 
 	String rowId;
 
@@ -22,5 +25,11 @@ public class UMTablesData {
 	String recordTyp;
 
 	String tblNm;
+
+	@Override
+	public String getEntity() {
+
+		return "UMTablesData";
+	}
 
 }

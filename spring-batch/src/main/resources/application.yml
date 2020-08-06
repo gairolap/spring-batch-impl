@@ -5,3 +5,6 @@ spring:
     password: admin
   batch:    initialize-schema: ALWAYS
     job:      enabled: false  thymeleaf:    cache: false    enabled: true
+    
+server:  port: 9090
+  servlet:    context-path: /batches
