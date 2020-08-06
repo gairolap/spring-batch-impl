@@ -22,6 +22,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.jdbc.core.JdbcTemplate;
 
+import com.jpmorgan.gwmft.batch.constant.BatchConstants;
 import com.jpmorgan.gwmft.batch.mapper.UMTablesMapper;
 import com.jpmorgan.gwmft.batch.model.Entity;
 import com.jpmorgan.gwmft.batch.reader.JDBCBatchReader;
@@ -64,14 +65,20 @@ public class BatchConfiguration {
 	@Value("${chunkSize}")
 	int chunkSize;
 
-	@Value("#{${consumerToModelMapping}}")
-	Map<String, String> consumerToModelMapping;
+	@Value("#{${modelMapping}}")
+	Map<String, String> modelMapping;
 
-	@Value("#{${consumerToCSVMapping}}")
-	Map<String, String> consumerToCSVMapping;
+	@Value("#{${fileNameMapping}}")
+	Map<String, String> fileNameMapping;
 
-	@Value("#{${consumerToCSVColsMapping}}")
-	Map<String, String> consumerToCSVColsMapping;
+	@Value("#{${filePathMapping}}")
+	Map<String, String> filePathMapping;
+
+	@Value("#{${colsToWriteMapping}}")
+	Map<String, String> colsToWriteMapping;
+
+	@Value("#{${delimiterMapping}}")
+	Map<String, String> delimiterMapping;
 
 	@Bean
 	public JdbcTemplate batchDetailsJdbcTemplate() {
@@ -83,10 +90,15 @@ public class BatchConfiguration {
 	public Step readMySQLWriteToCSV() {
 
 		return umTablesStepBuilderFactory.get("readMySQLWriteToCSV").chunk(chunkSize)
-				.reader(jdbcBatchReader.jdbcCursorItemReader(modelsMap.get(consumerToModelMapping.get("TMI")),
-						datasource, fetchUMTablesDetailsSQL, new UMTablesMapper()))
-				.writer(batchWriter.flatFileItemWriter(modelsMap.get(consumerToModelMapping.get("TMI")),
-						consumerToCSVMapping.get("TMI"), consumerToCSVColsMapping.get("TMI")))
+				.reader(jdbcBatchReader.jdbcCursorItemReader(
+						modelsMap.get(modelMapping.get(BatchConstants.TRUE_MRKT_IMPCT_KEY)), datasource,
+						fetchUMTablesDetailsSQL, new UMTablesMapper()))
+				.writer(batchWriter.flatFileItemWriter(
+						modelsMap.get(modelMapping.get(BatchConstants.TRUE_MRKT_IMPCT_KEY)),
+						filePathMapping.get(BatchConstants.TRUE_MRKT_IMPCT_KEY),
+						fileNameMapping.get(BatchConstants.TRUE_MRKT_IMPCT_KEY),
+						colsToWriteMapping.get(BatchConstants.TRUE_MRKT_IMPCT_KEY),
+						delimiterMapping.get(BatchConstants.TRUE_MRKT_IMPCT_KEY)))
 				.build();
 	}
 

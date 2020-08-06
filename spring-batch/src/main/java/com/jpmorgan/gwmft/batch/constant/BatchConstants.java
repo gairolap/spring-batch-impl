@@ -10,7 +10,8 @@ public class BatchConstants {
 	public static final String WHITESPACE_KEY = " ";
 	public static final String DOUBLE_QUOTE_KEY = "\"";
 	public static final String TIME_KEY = "time";
-	public static final String COMMA_DELIM = ",";
+	public static final String COMMA_KEY = ",";
 	public static final String BATCH_DTLS_DT_FRMT = "yyyy-MM-dd";
+	public static final String TRUE_MRKT_IMPCT_KEY = "trueMrktImpct";
 
 }
