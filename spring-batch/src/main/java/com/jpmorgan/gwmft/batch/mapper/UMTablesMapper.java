@@ -7,10 +7,12 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.stereotype.Component;
 
 import com.jpmorgan.gwmft.batch.model.UMTablesData;
 
-public class UMTablesMapper implements RowMapper<UMTablesData> {
+@Component
+public class UMTablesMapper implements RowMapper<UMTablesData>, Mapper {
 
 	@Override
 	public UMTablesData mapRow(ResultSet rs, int rowNum) throws SQLException {
@@ -22,6 +24,12 @@ public class UMTablesMapper implements RowMapper<UMTablesData> {
 		umTablesData.setTblNm(rs.getString("TBL_NM"));
 
 		return umTablesData;
+	}
+
+	@Override
+	public String getMapper() {
+
+		return "UMTablesMapper";
 	}
 
 }

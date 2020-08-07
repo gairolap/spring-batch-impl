@@ -18,13 +18,12 @@ public class JDBCBatchReader {
 	 * @param {@linkplain T}.
 	 * @param {@linkplain DataSource}.
 	 * @param {@linkplain String}.
-	 * @param {@linkplain RowMapper}.
+	 * @param {@linkplain S}.
 	 * 
 	 * @return {@linkplain JdbcCursorItemReader}.
 	 */
 	@SuppressWarnings("unchecked")
-	public <T, S> JdbcCursorItemReader<T> jdbcCursorItemReader(T t, DataSource datasource, String sql,
-			RowMapper<S> rowMapper) {
+	public <T, S> JdbcCursorItemReader<T> jdbcCursorItemReader(T t, DataSource datasource, String sql, S rowMapper) {
 
 		JdbcCursorItemReader<T> itemReader = new JdbcCursorItemReader<>();
 

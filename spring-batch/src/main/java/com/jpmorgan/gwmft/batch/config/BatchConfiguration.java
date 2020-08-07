@@ -23,7 +23,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 import com.jpmorgan.gwmft.batch.constant.BatchConstants;
-import com.jpmorgan.gwmft.batch.mapper.UMTablesMapper;
+import com.jpmorgan.gwmft.batch.mapper.Mapper;
 import com.jpmorgan.gwmft.batch.model.Entity;
 import com.jpmorgan.gwmft.batch.reader.JDBCBatchReader;
 import com.jpmorgan.gwmft.batch.writer.BatchWriter;
@@ -38,10 +38,13 @@ public class BatchConfiguration {
 
 	final Map<String, Entity> modelsMap;
 
-	@Autowired
-	public BatchConfiguration(List<Entity> repositories) {
+	final Map<String, Mapper> mappersMap;
 
-		modelsMap = repositories.stream().collect(Collectors.toMap(Entity::getEntity, Function.identity()));
+	@Autowired
+	public BatchConfiguration(List<Entity> entities, List<Mapper> mappers) {
+
+		modelsMap = entities.stream().collect(Collectors.toMap(Entity::getEntity, Function.identity()));
+		mappersMap = mappers.stream().collect(Collectors.toMap(Mapper::getMapper, Function.identity()));
 	}
 
 	@Autowired
@@ -59,11 +62,11 @@ public class BatchConfiguration {
 	@Autowired
 	DataSource datasource;
 
-	@Value("${fetchUMTablesDetailsSQL}")
-	String fetchUMTablesDetailsSQL;
+	@Value("#{${chunkSizeMapping}}")
+	Map<String, Integer> chunkSizeMapping;
 
-	@Value("${chunkSize}")
-	int chunkSize;
+	@Value("#{${sqlsMapping}}")
+	Map<String, String> sqlsMapping;
 
 	@Value("#{${modelMapping}}")
 	Map<String, String> modelMapping;
@@ -89,10 +92,12 @@ public class BatchConfiguration {
 	@Bean
 	public Step readMySQLWriteToCSV() {
 
-		return umTablesStepBuilderFactory.get("readMySQLWriteToCSV").chunk(chunkSize)
+		return umTablesStepBuilderFactory.get("readMySQLWriteToCSV")
+				.chunk(chunkSizeMapping.get(BatchConstants.TRUE_MRKT_IMPCT_KEY))
 				.reader(jdbcBatchReader.jdbcCursorItemReader(
-						modelsMap.get(modelMapping.get(BatchConstants.TRUE_MRKT_IMPCT_KEY)), datasource,
-						fetchUMTablesDetailsSQL, new UMTablesMapper()))
+						modelsMap.get(modelMapping.get(BatchConstants.UM_TABLES_MODEL_KEY)), datasource,
+						sqlsMapping.get(BatchConstants.TRUE_MRKT_IMPCT_KEY),
+						mappersMap.get(BatchConstants.UM_TABLES_MAPPER_KEY)))
 				.writer(batchWriter.flatFileItemWriter(
 						modelsMap.get(modelMapping.get(BatchConstants.TRUE_MRKT_IMPCT_KEY)),
 						filePathMapping.get(BatchConstants.TRUE_MRKT_IMPCT_KEY),

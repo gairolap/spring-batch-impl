@@ -13,5 +13,7 @@ public class BatchConstants {
 	public static final String COMMA_KEY = ",";
 	public static final String BATCH_DTLS_DT_FRMT = "yyyy-MM-dd";
 	public static final String TRUE_MRKT_IMPCT_KEY = "trueMrktImpct";
+	public static final String UM_TABLES_MAPPER_KEY = "UMTablesMapper";
+	public static final String UM_TABLES_MODEL_KEY = "UMTablesData";
 
 }
