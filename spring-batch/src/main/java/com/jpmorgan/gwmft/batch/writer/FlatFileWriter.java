@@ -9,10 +9,10 @@ import org.springframework.batch.item.file.transform.DelimitedLineAggregator;
 import org.springframework.core.io.PathResource;
 import org.springframework.stereotype.Component;
 
-import com.jpmorgan.gwmft.batch.constant.BatchConstants;
+import com.jpmorgan.gwmft.batch.constants.BatchConstants;
 
 @Component
-public class BatchWriter {
+public class FlatFileWriter {
 
 	/**
 	 * Writes to CSV.

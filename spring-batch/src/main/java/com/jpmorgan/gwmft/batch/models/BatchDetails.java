@@ -1,7 +1,7 @@
 /**
  * Model class for BATCH_JOB_EXECUTION.
  */
-package com.jpmorgan.gwmft.batch.model;
+package com.jpmorgan.gwmft.batch.models;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;

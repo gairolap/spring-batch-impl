@@ -1,11 +1,11 @@
 /**
- * Scheduler class for batch process.
+ * Scheduler class for pulling data from mySQL and write to CSV.
  */
-package com.jpmorgan.gwmft.batch.scheduler;
+package com.jpmorgan.gwmft.batch.schedulers;
 
-import org.springframework.batch.core.Job;
 import org.springframework.batch.core.JobParametersBuilder;
 import org.springframework.batch.core.JobParametersInvalidException;
+import org.springframework.batch.core.configuration.annotation.EnableBatchProcessing;
 import org.springframework.batch.core.launch.JobLauncher;
 import org.springframework.batch.core.repository.JobExecutionAlreadyRunningException;
 import org.springframework.batch.core.repository.JobInstanceAlreadyCompleteException;
@@ -14,7 +14,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
-import com.jpmorgan.gwmft.batch.constant.BatchConstants;
+import com.jpmorgan.gwmft.batch.constants.BatchConstants;
+import com.jpmorgan.gwmft.batch.jobs.MySQLToCSVJob;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -25,19 +26,20 @@ import lombok.experimental.FieldDefaults;
 @Data
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class BatchScheduler {
+@EnableBatchProcessing
+public class MySQLToCSVScheduler {
 
 	@Autowired
-	Job umTablesDataSchedulerJob;
+	MySQLToCSVJob mySQLToCSVJob;
 
 	@Autowired
-	JobLauncher umTablesDataJobLauncher;
+	JobLauncher jobLauncher;
 
 	@Scheduled(cron = "0 * * * * *")
-	public void executeSchedule() throws JobExecutionAlreadyRunningException, JobRestartException,
+	public void executeMySQLToCSVSchedule() throws JobExecutionAlreadyRunningException, JobRestartException,
 	JobInstanceAlreadyCompleteException, JobParametersInvalidException {
 
-		umTablesDataJobLauncher.run(umTablesDataSchedulerJob, new JobParametersBuilder()
+		jobLauncher.run(mySQLToCSVJob.mySQLToCSVJob("trueMrktImpct"), new JobParametersBuilder()
 				.addLong(BatchConstants.TIME_KEY, System.currentTimeMillis()).toJobParameters());
 	}
 

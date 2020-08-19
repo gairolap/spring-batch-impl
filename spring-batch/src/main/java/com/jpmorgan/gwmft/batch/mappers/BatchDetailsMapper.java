@@ -1,15 +1,17 @@
 /**
  * RowMapper class for Batch Details.
  */
-package com.jpmorgan.gwmft.batch.mapper;
+package com.jpmorgan.gwmft.batch.mappers;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.stereotype.Component;
 
-import com.jpmorgan.gwmft.batch.model.BatchDetails;
+import com.jpmorgan.gwmft.batch.models.BatchDetails;
 
+@Component
 public class BatchDetailsMapper implements RowMapper<BatchDetails> {
 
 	@Override

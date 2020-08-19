@@ -1,7 +1,7 @@
 /**
  * Generic reader implementation to read from given data-source. 
  */
-package com.jpmorgan.gwmft.batch.reader;
+package com.jpmorgan.gwmft.batch.readers;
 
 import javax.sql.DataSource;
 
@@ -23,7 +23,7 @@ public class JDBCBatchReader {
 	 * @return {@linkplain JdbcCursorItemReader}.
 	 */
 	@SuppressWarnings("unchecked")
-	public <T, S> JdbcCursorItemReader<T> jdbcCursorItemReader(T t, DataSource datasource, String sql, S rowMapper) {
+	public <T> JdbcCursorItemReader<T> jdbcCursorItemReader(T t, DataSource datasource, String sql, T rowMapper) {
 
 		JdbcCursorItemReader<T> itemReader = new JdbcCursorItemReader<>();
 

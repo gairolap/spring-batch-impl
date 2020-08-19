@@ -18,9 +18,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.jpmorgan.gwmft.batch.constant.BatchConstants;
-import com.jpmorgan.gwmft.batch.mapper.BatchDetailsMapper;
-import com.jpmorgan.gwmft.batch.model.BatchDetails;
+import com.jpmorgan.gwmft.batch.constants.BatchConstants;
+import com.jpmorgan.gwmft.batch.mappers.BatchDetailsMapper;
+import com.jpmorgan.gwmft.batch.models.BatchDetails;
 
 import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;

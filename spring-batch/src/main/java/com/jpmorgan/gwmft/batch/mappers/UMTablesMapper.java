@@ -1,7 +1,7 @@
 /**
  * RowMapper class for UM_TABLES_DATA.
  */
-package com.jpmorgan.gwmft.batch.mapper;
+package com.jpmorgan.gwmft.batch.mappers;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -9,7 +9,7 @@ import java.sql.SQLException;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Component;
 
-import com.jpmorgan.gwmft.batch.model.UMTablesData;
+import com.jpmorgan.gwmft.batch.models.UMTablesData;
 
 @Component
 public class UMTablesMapper implements RowMapper<UMTablesData>, Mapper {
@@ -27,9 +27,9 @@ public class UMTablesMapper implements RowMapper<UMTablesData>, Mapper {
 	}
 
 	@Override
-	public String getMapper() {
+	public String getMapperKey() {
 
-		return "UMTablesMapper";
+		return "trueMrktImpct";
 	}
 
 }
