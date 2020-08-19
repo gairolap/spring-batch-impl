@@ -1,7 +1,7 @@
 /**
  * Generic writer implementation for writing to CSV.
  */
-package com.jpmorgan.gwmft.batch.writer;
+package com.jpmorgan.gwmft.batch.writers;
 
 import org.springframework.batch.item.file.FlatFileItemWriter;
 import org.springframework.batch.item.file.transform.BeanWrapperFieldExtractor;

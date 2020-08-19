@@ -19,7 +19,7 @@ import org.springframework.stereotype.Component;
 import com.jpmorgan.gwmft.batch.mappers.Mapper;
 import com.jpmorgan.gwmft.batch.models.Entity;
 import com.jpmorgan.gwmft.batch.readers.JDBCBatchReader;
-import com.jpmorgan.gwmft.batch.writer.FlatFileWriter;
+import com.jpmorgan.gwmft.batch.writers.FlatFileWriter;
 
 @Component
 public class MySQLToCSVStep {
