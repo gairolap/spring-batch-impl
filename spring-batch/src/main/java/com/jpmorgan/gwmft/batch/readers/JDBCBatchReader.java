@@ -18,7 +18,7 @@ public class JDBCBatchReader {
 	 * @param {@linkplain T}.
 	 * @param {@linkplain DataSource}.
 	 * @param {@linkplain String}.
-	 * @param {@linkplain S}.
+	 * @param {@linkplain T}.
 	 * 
 	 * @return {@linkplain JdbcCursorItemReader}.
 	 */

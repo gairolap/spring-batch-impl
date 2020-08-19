@@ -18,13 +18,9 @@ import com.jpmorgan.gwmft.batch.constants.BatchConstants;
 import com.jpmorgan.gwmft.batch.jobs.MySQLToCSVJob;
 
 import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Data;
 import lombok.experimental.FieldDefaults;
 
 @Component
-@Data
-@AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @EnableBatchProcessing
 public class MySQLToCSVScheduler {
@@ -37,7 +33,7 @@ public class MySQLToCSVScheduler {
 
 	@Scheduled(cron = "0 * * * * *")
 	public void executeMySQLToCSVSchedule() throws JobExecutionAlreadyRunningException, JobRestartException,
-	JobInstanceAlreadyCompleteException, JobParametersInvalidException {
+			JobInstanceAlreadyCompleteException, JobParametersInvalidException {
 
 		jobLauncher.run(mySQLToCSVJob.mySQLToCSVJob("trueMrktImpct"), new JobParametersBuilder()
 				.addLong(BatchConstants.TIME_KEY, System.currentTimeMillis()).toJobParameters());
